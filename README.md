@@ -1,59 +1,45 @@
-# RickMortyApp
+# rapid-api-app
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Este proyecto fue creado con Angular CLI versión 22.1.8.
 
-## Development server
+## Servidor de desarrollo
 
-To start a local development server, run:
+Para iniciar el servidor local, ejecuta:
 
-```bash
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Después abre tu navegador en:
 
-## Code scaffolding
+http://localhost:4200/
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+La aplicación se actualizará automáticamente cuando hagas cambios en los archivos.
 
-```bash
-ng generate component component-name
-```
+## Crear componentes
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Para crear un componente nuevo utiliza:
 
-```bash
+ng generate component nombre-del-componente
+
+Para ver todas las opciones disponibles utiliza:
+
 ng generate --help
-```
 
-## Building
+## Compilar el proyecto
 
-To build the project run:
+Para compilar el proyecto utiliza:
 
-```bash
 ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Los archivos generados se guardarán en la carpeta dist/.
 
-## Running unit tests
+## Pruebas
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Para ejecutar las pruebas utiliza:
 
-```bash
 ng test
-```
 
-## Running end-to-end tests
+## Recursos
 
-For end-to-end (e2e) testing, run:
+Para consultar la documentación oficial de Angular puedes visitar:
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+https://angular.dev/
