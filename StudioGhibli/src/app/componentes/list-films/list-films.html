@@ -1,1 +1,44 @@
-<p>list-films works!</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card p-3 mb-4 shadow-sm border-0 bg-light">
+      <form (ngSubmit)="filterData()">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label fw-bold">Categoría</label>
+            <select name="search" id="search" class="form-select" [(ngModel)]="filter.searchBy">
+              <option value="title">Título</option>
+            </select>
+          </div>
+          <div class="col-md-5">
+            <label for="value" class="form-label fw-bold">Búsqueda</label>
+            <input type="text" class="form-control" [(ngModel)]="filter.value" name="value" id="value" placeholder="Escribe para buscar película...">
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-primary w-100" type="submit">
+              <i class="bi bi-search me-1"></i> Filtrar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      @for(pelicula of listaPeliculas; track pelicula.id) {
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            <img [src]="pelicula.image" class="card-img-top" [alt]="pelicula.title">
+            <div class="card-body text-center">
+              <h5 class="card-title text-truncate fw-bold">{{ pelicula.title }}</h5>
+              <p class="card-text text-muted small">{{ pelicula.original_title }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 pb-3">
+              <a class="btn btn-outline-primary w-100" [routerLink]="['/detail-film', pelicula.id]">
+                Ver detalle
+              </a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
