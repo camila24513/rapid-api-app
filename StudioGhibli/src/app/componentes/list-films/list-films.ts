@@ -1,49 +1,77 @@
-import { Component, inject } from '@angular/core';
-import { IFilter } from '../../modelo/filter-model';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { FilmService } from '../../services/film-service';
 import { IFilm } from '../../modelo/film-model';
-import { RouterLink } from '@angular/router';
+import { IFilter } from '../../modelo/filter-model';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-films',
   standalone: true,
-  imports: [FormsModule, RouterLink],
-  templateUrl: './list-films.html'
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './list-films.html',
+  styleUrl: './list-films.css'
 })
-export class ListFilms {
+export class ListFilmsComponent implements OnInit {
   private filmService = inject(FilmService);
 
-  public listaPeliculas: IFilm[] = [];
-  public filter: IFilter = { searchBy: 'title', value: '' };
+  listaPeliculas: IFilm[] = [];
 
-  ngOnInit() {
-    this.filterData();
+  filter: IFilter = {
+    searchBy: 'title',
+    value: ''
+  };
+
+  ngOnInit(): void {
   }
 
-  filterData() {
-    this.filmService.getFilms(this.filter).subscribe({
-      next: (data) => {
-        this.listaPeliculas = data;
-        if (data.length === 0) {
-          Swal.fire({
-            title: 'Sin resultados',
-            text: 'No se encontraron películas de Studio Ghibli con ese filtro',
-            icon: 'warning',
-            confirmButtonText: 'Aceptar'
-          });
-        }
-      },
-      error: () => {
+  filterData(): void {
+    const valor = this.filter.value.trim();
+
+    if (!valor) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Por favor, ingresa un término de búsqueda para filtrar.'
+      });
+      this.listaPeliculas = [];
+      return;
+    }
+
+    switch (this.filter.searchBy) {
+      case 'title':
+        this.filmService.getFilmsByTitle(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      case 'originalTitle':
+        this.filmService.getFilmsByOriginalTitle(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      case 'director':
+        this.filmService.getFilmsByDirector(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      case 'producer':
+        this.filmService.getFilmsByProducer(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      case 'releaseDate':
+        this.filmService.getFilmsByReleaseDate(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      case 'score':
+        this.filmService.getFilmsByScore(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      case 'runningTime':
+        this.filmService.getFilmsByRunningTime(valor).subscribe(data => this.listaPeliculas = data);
+        break;
+
+      default:
         this.listaPeliculas = [];
-        Swal.fire({
-          title: 'Error',
-          text: 'Ocurrió un error al consultar la API de Studio Ghibli',
-          icon: 'error',
-          confirmButtonText: 'Cerrar'
-        });
-      }
-    });
+        break;
+    }
   }
 }

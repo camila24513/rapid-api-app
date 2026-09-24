@@ -1,52 +1,66 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { IFilter } from "../modelo/filter-model";
-import { first, map } from "rxjs";
-import { IFilm } from "../modelo/film-model";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { IFilm, IPerson, IVehicle } from '../modelo/film-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilmService {
-  private URL_BASE = "https://ghibliapi.vercel.app/films";
   private http = inject(HttpClient);
+  private baseUrl = 'https://ghibliapi.vercel.app';
 
-  getFilms(filter: IFilter) {
-    return this.http.get<any[]>(this.URL_BASE).pipe(
-      first(),
-      map((films: any[]) => {
-        let parsedFilms = films.map(film => ({
-          id: film.id,
-          title: film.title,
-          original_title: film.original_title,
-          image: film.image,
-          description: film.description,
-          director: film.director,
-          release_date: film.release_date
-        } as IFilm));
+  getFilms(): Observable<IFilm[]> {
+    return this.http.get<IFilm[]>(`${this.baseUrl}/films`);
+  }
 
-        if (filter.searchBy === 'title' && filter.value) {
-          const val = filter.value.toLowerCase();
-          parsedFilms = parsedFilms.filter(f => f.title.toLowerCase().includes(val));
-        }
+  getFilmById(id: string): Observable<IFilm> {
+    return this.http.get<IFilm>(`${this.baseUrl}/films/${id}`);
+  }
 
-        return parsedFilms;
-      })
+  getFilmsByTitle(title: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.title.toLowerCase().includes(title.toLowerCase())))
     );
   }
 
-  getFilmByID(id: string) {
-    return this.http.get<any>(`${this.URL_BASE}/${id}`).pipe(
-      first(),
-      map((film: any) => ({
-        id: film.id,
-        title: film.title,
-        original_title: film.original_title,
-        image: film.image,
-        description: film.description,
-        director: film.director,
-        release_date: film.release_date
-      } as IFilm))
+  getFilmsByOriginalTitle(originalTitle: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.original_title_romanised.toLowerCase().includes(originalTitle.toLowerCase())))
     );
+  }
+
+  getFilmsByDirector(director: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.director.toLowerCase().includes(director.toLowerCase())))
+    );
+  }
+
+  getFilmsByProducer(producer: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.producer.toLowerCase().includes(producer.toLowerCase())))
+    );
+  }
+
+  getFilmsByReleaseDate(year: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.release_date === year))
+    );
+  }
+
+  getFilmsByScore(score: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.rt_score === score))
+    );
+  }
+
+  getFilmsByRunningTime(minutes: string): Observable<IFilm[]> {
+    return this.getFilms().pipe(
+      map(films => films.filter(f => f.running_time === minutes))
+    );
+  }
+
+  getVehicles(): Observable<IVehicle[]> {
+    return this.http.get<IVehicle[]>(`${this.baseUrl}/vehicles`);
   }
 }
