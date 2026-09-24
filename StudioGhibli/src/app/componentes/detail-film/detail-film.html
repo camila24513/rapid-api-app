@@ -1,1 +1,33 @@
-<p>detail-film works!</p>
+<div class="container my-4" *ngIf="film">
+  <a routerLink="/" class="btn btn-outline-secondary mb-3"> ← Volver a la lista </a>
+
+  <div class="card shadow border-0 p-4">
+    <div class="row g-4">
+      <div class="col-md-4 text-center">
+        <img
+          [src]="film.image"
+          [alt]="film.title"
+          class="img-fluid rounded shadow-sm"
+          style="max-height: 400px; object-fit: cover"
+        />
+      </div>
+      <div class="col-md-8">
+        <h2 class="fw-bold text-primary">{{ film.title }}</h2>
+        <h5 class="text-muted mb-3">
+          {{ film.original_title }} ({{ film.original_title_romanised }})
+        </h5>
+
+        <p><strong>Director:</strong> {{ film.director }}</p>
+        <p><strong>Productor:</strong> {{ film.producer }}</p>
+        <p><strong>Año de estreno:</strong> {{ film.release_date }}</p>
+        <p><strong>Duración:</strong> {{ film.running_time }} minutos</p>
+        <p><strong>Puntuación:</strong> {{ film.rt_score }} / 100</p>
+        <p class="mt-3">{{ film.description }}</p>
+
+        <button class="btn btn-outline-info mt-3" (click)="verVehiculos()">
+          Ver Vehículos de la API
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

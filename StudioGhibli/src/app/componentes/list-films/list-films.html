@@ -4,15 +4,30 @@
       <form (ngSubmit)="filterData()">
         <div class="row g-3 align-items-end">
           <div class="col-md-5">
-            <label class="form-label fw-bold">Categoría</label>
-            <select name="search" id="search" class="form-select" [(ngModel)]="filter.searchBy">
+            <label class="form-label fw-bold">Buscar por Categoría</label>
+            <select name="searchBy" id="searchBy" class="form-select" [(ngModel)]="filter.searchBy">
               <option value="title">Título</option>
+              <option value="originalTitle">Título Romanizado</option>
+              <option value="director">Director</option>
+              <option value="producer">Productor</option>
+              <option value="releaseDate">Año de Estreno</option>
+              <option value="score">Puntuación (Rotten Tomatoes)</option>
+              <option value="runningTime">Duración (Minutos)</option>
             </select>
           </div>
+
           <div class="col-md-5">
             <label for="value" class="form-label fw-bold">Búsqueda</label>
-            <input type="text" class="form-control" [(ngModel)]="filter.value" name="value" id="value" placeholder="Escribe para buscar película...">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="filter.value"
+              name="value"
+              id="value"
+              placeholder="Escribe para buscar..."
+            />
           </div>
+
           <div class="col-md-2">
             <button class="btn btn-primary w-100" type="submit">
               <i class="bi bi-search me-1"></i> Filtrar
@@ -22,23 +37,46 @@
       </form>
     </div>
 
-    <div class="row">
-      @for(pelicula of listaPeliculas; track pelicula.id) {
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-          <div class="card h-100 shadow-sm border-0">
-            <img [src]="pelicula.image" class="card-img-top" [alt]="pelicula.title">
-            <div class="card-body text-center">
-              <h5 class="card-title text-truncate fw-bold">{{ pelicula.title }}</h5>
-              <p class="card-text text-muted small">{{ pelicula.original_title }}</p>
-            </div>
-            <div class="card-footer bg-transparent border-0 pb-3">
-              <a class="btn btn-outline-primary w-100" [routerLink]="['/detail-film', pelicula.id]">
-                Ver detalle
-              </a>
+    @if (listaPeliculas.length > 0) {
+      <div class="row">
+        @for (pelicula of listaPeliculas; track pelicula.id) {
+          <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+              <img
+                [src]="pelicula.image"
+                class="card-img-top"
+                [alt]="pelicula.title"
+                style="height: 300px; object-fit: cover"
+              />
+              <div class="card-body text-center">
+                <h5 class="card-title text-truncate fw-bold">{{ pelicula.title }}</h5>
+                <p class="card-text text-muted small mb-1">
+                  {{ pelicula.original_title_romanised }}
+                </p>
+                <span class="badge bg-secondary mb-2"
+                  >{{ pelicula.release_date }} | {{ pelicula.running_time }} min</span
+                >
+              </div>
+              <div class="card-footer bg-transparent border-0 pb-3">
+                <a
+                  class="btn btn-outline-primary w-100"
+                  [routerLink]="['/detail-film', pelicula.id]"
+                >
+                  Ver detalle
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    } @else {
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-search fs-1"></i>
+        <p class="mt-2 fs-5">
+          Selecciona un criterio, ingresa un valor y haz clic en <strong>Filtrar</strong> para ver
+          películas.
+        </p>
+      </div>
+    }
   </div>
 </div>
